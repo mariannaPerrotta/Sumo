@@ -37,16 +37,24 @@ $t="=";
          $time=str_replace(".", "_", $s);
          fwrite($fp,$time);
 
-        $s=".";
-        fwrite($fp, $s);
 
-        $edge= ($veicoli[$k]['edge_id']);
-        fwrite($fp,$edge);
 
         $s=".";
         fwrite($fp, $s);
 
         $lane= ($veicoli[$k]['lane_id']);
+        if(strrpos($lane, ':')!==false){
+            $lane=str_replace(":", "enter_", $lane);
+        }
+        if(strrpos($lane, '#')!==false){
+
+            $lane=str_replace("#", "_stop_", $lane);
+        }
+        if(strrpos($lane, '-')!==false){
+            $lane=str_replace("-", "_turn_over_", $lane);
+        }
+
+
         fwrite($fp,$lane);
 
         $s=".";
@@ -79,21 +87,55 @@ $t="=";
         fwrite($fp,$t);
         fwrite($fp,$c);
         fwrite($fp,$k);
-        $s="+";
-        fwrite($fp, $s);
-
+        if($k!==sizeof($veicoli)-1) {
+            $s = "+";
+            fwrite($fp, $s);
+        }
 
     }
 
 
-    $s="\r\n";
-    fwrite($fp,$s);
-
-
-
-
 
 }
+
+
+$s="\r\n";
+fwrite($fp,$s);
+
+
+
+$proc= "proc TOT= (";
+fwrite($fp,$proc);
+for( $i=0; $i<$num_veicoli; $i++){
+    $s= " V";
+    $t="|";
+    fwrite($fp, $s);
+    fwrite($fp, $i);
+    fwrite($fp, $t);
+
+}
+
+
+$time_tot= array();
+$time= $query->getTime();
+for( $i=0; $i<sizeof($time); $i++ ){
+    $t= $time[$i]['timestep_time'];
+    $id= $time[$i]['vehicle_id'];
+    $trat= "_";
+    $ap="'";
+    fwrite($fp,$ap);
+    fwrite($fp,$t);
+    fwrite($fp,$trat);
+    fwrite($fp,$id);
+    $p=".";
+    fwrite($fp,$p);
+
+}
+
+$s="\r\n";
+fwrite($fp,$s);
+
+
 
 
 fclose($fp);
