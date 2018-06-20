@@ -36,6 +36,7 @@ for( $i=0; $i<$num_veicoli; $i++){
     $alta= $media+ceil($max/3);
 
     for($k=0; $k< sizeof($veicoli); $k++ ){
+
         $time="time_";
         fwrite($fp,$time);
         $s=($veicoli[$k]['timestep_time']);
@@ -87,31 +88,36 @@ for( $i=0; $i<$num_veicoli; $i++){
             $s= "bassa_";
             $t= $time;
             $c= "_";
-            $n= $k;
+            $n= $i;
         }
 
         if($velocita>$bassa && $velocita<=$media){
             $s= "media_";
             $t= $time;
             $c= "_";
-            $n= $k;
+            $n= $i;
         }
         if($velocita>$media){
             $s= "alta_";
             $t= $time;
             $c= "_";
-            $n= $k;
+            $n= $i;
         }
         fwrite($fp,$s);
         fwrite($fp,$t);
         fwrite($fp,$c);
-        fwrite($fp,$k);
+        fwrite($fp,$i);
+        $nil=".nil";
+        fwrite($fp,$nil);
+
         if($k!==sizeof($veicoli)-1) {
             $s = "+";
             fwrite($fp, $s);
         }
 
     }
+
+
     $parentesi=")";
     fwrite($fp,$parentesi);
     $s="\r\n";
@@ -143,8 +149,7 @@ for( $i=0; $i<$num_veicoli; $i++){
 $time_tot= array();
 $time= $query->getTime();
 for( $i=0; $i<sizeof($time); $i++ ){
-    $s="time_";
-    fwrite($fp,$s);
+
     $t= $time[$i]['timestep_time'];
     $t=str_replace(".", "_", $t);
 
@@ -152,13 +157,15 @@ for( $i=0; $i<sizeof($time); $i++ ){
     $trat= "_";
     $ap="'";
     fwrite($fp,$ap);
+    $s="time_";
+    fwrite($fp,$s);
     fwrite($fp,$t);
     fwrite($fp,$trat);
     fwrite($fp,$id);
-    if($i!=sizeof($time)-1) {
+
         $p = ".";
         fwrite($fp, $p);
-    }
+
 }
 
 $nil="nil";
@@ -181,7 +188,7 @@ for( $i=0; $i<sizeof($time); $i++ ){
 
     $id= $time[$i]['vehicle_id'];
     $trat= "_";
-    fwrite($fp,$ap);
+
     fwrite($fp,$t);
     fwrite($fp,$trat);
     fwrite($fp,$id);
