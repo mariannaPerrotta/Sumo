@@ -4,7 +4,7 @@ require 'Query.php';
 
 $fp = fopen("C:\Users\Chiara\Desktop\processo.ccs", 'w');
 if(!$fp) die ("Errore nella operaione con il file");
-$num_veicoli=4;
+$num_veicoli=3;
 $time=99;
 $max=0;
 $bassa=0;
@@ -67,6 +67,9 @@ for( $i=0; $i<$num_veicoli; $i++){
 
 
         fwrite($fp,$lane);
+        $trat="_";
+        fwrite($fp,$trat);
+        fwrite($fp,$i);
 
         $s=".";
         fwrite($fp, $s);
@@ -107,16 +110,16 @@ for( $i=0; $i<$num_veicoli; $i++){
         fwrite($fp,$t);
         fwrite($fp,$c);
         fwrite($fp,$i);
-        $nil=".nil";
-        fwrite($fp,$nil);
+
 
         if($k!==sizeof($veicoli)-1) {
-            $s = "+";
+            $s = ".";
             fwrite($fp, $s);
         }
 
     }
-
+    $nil=".nil";
+    fwrite($fp,$nil);
 
     $parentesi=")";
     fwrite($fp,$parentesi);
