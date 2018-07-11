@@ -1,9 +1,11 @@
 <?php
 require 'Query.php';
+
 $fp = fopen("C:\Users\Chiara\Desktop\change_lane.mu", 'w');
 if(!$fp) die ("Errore nella operaione con il file");
 $num_veicoli=3;
 
+$proprieta=[];
 $query= new Query();
 for( $i=0; $i<$num_veicoli; $i++){
     $num_strade=0;
@@ -38,6 +40,17 @@ for( $i=0; $i<$num_veicoli; $i++){
 if($k>0) {
     if ($strade[$k - 1] !== $lane) {
 
+        $p= "P";
+        $trat="_";
+
+        $p.=$i;
+        $p.=$trat;
+        $p.=$num_strade;
+        array_push($proprieta, $p);
+        print_r($proprieta);
+
+
+
         $s= "prop P";
         $t="=";
         $min= "min X";
@@ -60,11 +73,6 @@ if($k>0) {
                 }
             }
         }
-
-
-
-
-
 
 
         $q= "prop Q";
@@ -123,6 +131,14 @@ if($k>0) {
 
 }
 else{
+    $p= "P";
+    $trat="_";
+
+    $p.=$i;
+    $p.=$trat;
+    $p.=$num_strade;
+    array_push($proprieta, $p);
+    print_r($proprieta);
 
     $s= "prop P";
     $t="=";
@@ -205,4 +221,15 @@ else{
 
     }
 
+    //exec('cwb-nc.bat');
+
+
 }
+$stringa= '>load C:\Users\Chiara\Desktop\processo.ccs';
+
+$a=' C:\CWB-NC\bin\cwb-nc.bat ccs; C:\CWB-NC\bin\cwb-nc.bat ccs> load C:\Users\Chiara\Desktop\processo.ccs  ';
+
+$s=shell_exec($a);
+
+
+echo "<pre>$s</pre>";
